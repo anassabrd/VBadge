@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">VBadge</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="finger_print">Empreinte\nDigitale</string>
+    <string name="vbadge">VBadge</string>
+    <string name="vbadge_name">NOM Prénom</string>
+    <string name="vbadge_state">Etat de badge :</string>
+    <string name="date_in">Date d\'entrée</string>
+    <string name="date_out">Date de sortie</string>
+    <string name="vbadge_secteur">Secteurs autorisés</string>
+    <string name="facial_recognition">Reconnaissance\nFaciale</string>
+</resources>

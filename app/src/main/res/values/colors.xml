@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#303F9F</color>
+    <color name="alerter_default_success_background">#4CAF50</color>
+    <color name="alert_default_error_background">#F44336</color>
+    <color name="pressed">#330066ff</color>
+    <color name="shadow">#A0000000</color>
+    <color name="secondary_text">#727272</color>
+    <color name="Black0Percent">#00000000</color>
+    <color name="event_color_01">#59dbe0</color>
+    <color name="event_color_02">#f57f68</color>
+    <color name="event_color_03">#87d288</color>
+    <color name="event_color_04">#f8b552</color>
+    <color name="accent_dark">#084b73</color>
+    <color name="toolbar">#efefef</color>
+    <color name="toolbar_text">#8f000000</color>
+    <color name="accent">#2789e4</color>
+    <color name="today_highlight_color">#0033b5e5</color>
+
+    <!-- The app wide background color -->
+    <color name="background_color_popover">#ffffff</color>
+    <color name="background_color">#fafafa</color>
+    <color name="event_background">#ffc3d9ff</color>
+    <color name="panel_text_foreground">#ffffffff</color>
+    <color name="calendar_event_text_color">#ffFFFFFF</color>
+
+    <color name="calendar_owner_text_color">#777777</color>
+    <color name="calendar_date_range_color">#80000000</color>
+    <color name="Black">#000000</color>
+
+
+    <color name="week_saturday">#80333333</color>
+    <color name="week_sunday">#80333333</color>
+    <color name="calendar_future_bg_color">#ffffffff</color>
+    <color name="calendar_hour_label">#ff666666</color>
+    <color name="calendar_ampm_label">#ff999999</color>
+    <color name="calendar_hour_background">#ffEEEEEE</color>
+
+    <color name="calendar_date_banner_background">#FFEEEEEE</color>
+
+    <color name="calendar_date_banner_text_color">#ff666666</color>
+
+    <color name="calendar_grid_area_selected">#e633b5e5</color>
+
+
+    <color name="calendar_grid_line_inner_horizontal_color">#FFCCCCCC</color>
+    <color name="calendar_grid_line_inner_vertical_color">#FFCCCCCC</color>
+    <color name="calendar_grid_line_highlight_color">#ff707070</color>
+
+    <color name="mini_month_bg_color">#FFFFFFFF</color>
+    <color name="mini_month_today_outline_color">#FF000000</color>
+
+    <color name="month_day_number">#FF333333</color>
+    <color name="month_mini_day_number">#FF000000</color>
+    <color name="month_day_number_other">#FF999999</color>
+    <color name="month_week_num_color">#FF999999</color>
+    <color name="month_day_names_color">#FF999999</color>
+    <color name="month_today_number">#FF333333</color>
+    <color name="month_event_color">#FF333333</color>
+    <color name="month_event_extra_color">#FF666666</color>
+    <color name="month_event_other_color">#FF666666</color>
+    <color name="month_event_extra_other_color">#4C999999</color>
+    <color name="month_saturday">#80333333</color>
+    <color name="month_sunday">#80333333</color>
+    <color name="month_grid_lines">#ffCCCCCC</color>
+    <color name="month_other_month_day_number">#ff939497</color>
+
+
+
+    <color name="month_other_bgcolor">#FFEEEEEE</color>
+    <color name="month_selected_week_bgcolor">#FFDDDDDD</color>
+    <color name="month_today_bgcolor">#FFFFFFFF</color>
+    <color name="month_bgcolor">#FFE5E5E5</color>
+
+
+
+    <color name="month_dna_conflict_time_color">#FF333333</color>
+
+    <color name="event_center">#ff6bd697</color>
+    <color name="edit_event_separator">#FFDDDDDD</color>
+
+    <color name="calendar_visible">#ff000000</color>
+    <color name="calendar_hidden">#ff808080</color>
+    <color name="calendar_secondary_visible">#ff323232</color>
+    <color name="calendar_secondary_hidden">#ff808080</color>
+
+    <!-- Text color of the date in the Calendar widget -->
+
+    <color name="agenda_item_not_selected">#00000000</color>
+    <!-- Text color of declined events in agenda view -->
+    <color name="agenda_item_declined_color">#66333333</color>
+    <!-- Text color of non-declined events in agenda view -->
+    <color name="agenda_item_standard_color">#FF333333</color>
+    <!-- Background Color of present/future events in agenda view  -->
+    <color name="agenda_day_bar_background_color">#FFFFFFFF</color>
+    <!-- Background Color of past events in agenda view  -->
+    <color name="agenda_past_days_bar_background_color">#FFDDDDDD</color>
+    <!-- Color of the separator between the past and the present/future in agenda view  -->
+    <color name="agenda_past_present_separator_color">#FF333333</color>
+    <!-- General background color in agenda view  -->
+    <color name="agenda_general_background_color">#FFEEEEEE</color>
+    <!-- Agenda day item text color  -->
+    <color name="agenda_day_item_text_color">#FF666666</color>
+    <!-- Color of the event location's text in an agenda item  -->
+    <color name="agenda_item_where_text_color">#FF666666</color>
+    <!-- Color of the event location's text in an agenda item  -->
+    <color name="agenda_item_where_declined_text_color">#66666666</color>
+    <!-- Color of text in the calendar view selection menu -->
+    <color name="calendar_view_switch_menu_text_color">#FF666666</color>
+    <!-- Light color of text in the calendar view selection menu -->
+    <color name="calendar_view_switch_menu_text_color_light">#FF888888</color>
+    <!-- Color of the separator between items in the agenda list -->
+    <color name="agenda_list_separator_color">#FFBBBBBB</color>
+    <!-- Text color of a selected items in the agenda list - trumps all other text colors -->
+    <!-- Background color of a selected items in the agenda list -->
+    <color name="agenda_selected_text_color">#FFFFFFFF</color>
+    <!-- Text color of the "new event" hint in day and week views -->
+    <color name="new_event_hint_text_color">#FFFFFFFF</color>
+
+    <!-- Text color of a clicked event in the day/week view -->
+    <color name="day_event_clicked_background_color">#8033B5E5</color>
+    <!-- background color for for clicked days in month view-->
+    <color name="day_clicked_background_color">#FF33B5E5</color>
+    <!-- background color for the past -->
+    <color name="day_past_background_color">#FFDDDDDD</color>
+
+    <!-- Event info colors -->
+    <color name="event_info_headline_color">#FFFFFFFF</color>
+    <color name="event_info_headline_transparent_color">#B3FFFFFF</color>
+    <color name="event_info_headline_link_color">#FFFFFFFF</color>
+    <color name="event_info_organizer_color">#FF666666</color>
+    <color name="event_info_description_color">#FF666666</color>
+    <color name="event_info_body_color">#FF666666</color>
+    <color name="event_info_label_color">#FF999999</color>
+    <color name="event_info_label_background_color">#FFDDDDDD</color>
+
+    <color name="text_shadow_color">#4D000000</color>
+
+    <color name="alert_event_title">#FFFFFFFF</color>
+    <color name="alert_event_other">#FF999999</color>
+    <color name="alert_past_event">#8F999999</color>
+
+    <color name="appwidget_row_in_progress">#6633b5e5</color>
+
+    <color name="appwidget_date">#ffEEEEEE</color>
+    <color name="appwidget_week">@android:color/white</color>
+    <color name="appwidget_month">#ffEEEEEE</color>
+
+    <!-- Text color of declined events in widget view -->
+    <color name="appwidget_item_declined_color">#66333333</color>
+    <!-- Text color of non-declined events in widget view -->
+    <color name="appwidget_item_standard_color">#ff333333</color>
+    <!-- Text color for all day events in widget view -->
+    <color name="appwidget_item_allday_color">#ffffffff</color>
+
+    <color name="appwidget_title">#ffffffff</color>
+    <color name="appwidget_when">#ffffffff</color>
+    <color name="appwidget_where">#ffffffff</color>
+    <color name="appwidget_no_events">#ffffffff</color>
+
+    <color name="Marron">#ff94214E</color>
+    <color name="light_gray">#dddddd</color>
+    <color name="transparentWhite">#88000000</color>
+    <color name="marron_transparent_color">#332E010A</color>
+    <color name="android_green">#FFA4C639</color>
+    <color name="honeycombish_blue">#FF58BAED</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="RedLight">#f65656</color>
+    <color name="soft_grey">#FF777777</color>
+    <color name="background">#FFEFEFEF</color>
+    <color name="marron_aa_color">#AA2E010A</color>
+    <color name="Yellow">#ffa713</color>
+    <color name="Red">#f44336</color>
+    <color name="Blue">#0085ff</color>
+    <color name="Green">#009688</color>
+    <color name="TealLight">#e0f2f1</color>
+    <color name="Teal">#008080</color>
+    <color name="TealDark">#00695c</color>
+    <color name="YellowGold">#FFBF4F</color>
+    <color name="one_round">#9ccc65</color>
+    <color name="two_round">#a1887f</color>
+    <color name="three_round">#90a4ae</color>
+    <color name="four_round">#7986cb</color>
+    <!-- Screens background color-->
+    <color name="bg_screen1">#f64c73</color>
+    <color name="bg_screen2">#20d2bb</color>
+    <color name="bg_screen3">#3395ff</color>
+    <color name="bg_screen4">#c873f4</color>
+
+    <!-- dots inactive colors -->
+    <color name="dot_dark_screen1">#d1395c</color>
+    <color name="dot_dark_screen2">#14a895</color>
+    <color name="dot_dark_screen3">#2278d4</color>
+    <color name="dot_dark_screen4">#a854d4</color>
+
+    <!-- dots active colors -->
+    <color name="dot_light_screen1">#f98da5</color>
+    <color name="dot_light_screen2">#8cf9eb</color>
+    <color name="dot_light_screen3">#93c6fd</color>
+    <color name="dot_light_screen4">#e4b5fc</color>
+    <color name="TealBack">#CDE9E8</color>
+
+    <array name="array_dot_active">
+        <item>@color/dot_light_screen1</item>
+        <item>@color/dot_light_screen2</item>
+        <item>@color/dot_light_screen3</item>
+        <item>@color/dot_light_screen4</item>
+    </array>
+
+    <array name="array_dot_inactive">
+        <item>@color/dot_dark_screen1</item>
+        <item>@color/dot_dark_screen2</item>
+        <item>@color/dot_dark_screen3</item>
+        <item>@color/dot_dark_screen4</item>
+    </array>
+</resources>
