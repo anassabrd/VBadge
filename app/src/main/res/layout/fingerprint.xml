@@ -20,6 +20,7 @@
             android:text="Empreinte Digitale"/>
 
         <ImageView
+            android:id="@+id/fingerprint"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/fingerprint_icon"/>

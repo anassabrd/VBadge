@@ -7,12 +7,14 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.surtymar.vbadge.Activities.MainActivity;
 import com.surtymar.vbadge.Adapters.VBadgeAdapter;
 import com.surtymar.vbadge.R;
+import com.surtymar.vbadge.Utils.Utils;
 
 
 public class VBadgeFragment extends Fragment {
@@ -22,6 +24,8 @@ public class VBadgeFragment extends Fragment {
     private ViewPager viewPager;
     private LinearLayout btnPrev, btnNext;
     private TextView right_title, left_title;
+    private TextView vbadge_name, vbadge_state, date_in, date_out;
+    private ImageView qrcode;
     private int[] layouts = {0,0};
 
     public VBadgeFragment() {
@@ -41,6 +45,8 @@ public class VBadgeFragment extends Fragment {
         right_title = (TextView) v.findViewById(R.id.right_title);
         left_title = (TextView) v.findViewById(R.id.left_title);
         viewPager = (ViewPager) v.findViewById(R.id.viewPager);
+
+        Utils.createQR(v);
 
         viewPager.setAdapter(new VBadgeAdapter((MainActivity) getActivity()));
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
@@ -125,7 +131,5 @@ public class VBadgeFragment extends Fragment {
     }
 
 
-
-    // TODO: Rename method, update argument and hook method into UI event
 
 }

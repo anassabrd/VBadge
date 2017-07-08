@@ -23,7 +23,7 @@
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/facial"/>
+            android:src="@drawable/ic_facial"/>
 
 
     </LinearLayout>

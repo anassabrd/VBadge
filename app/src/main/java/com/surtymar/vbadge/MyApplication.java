@@ -49,7 +49,7 @@ public class MyApplication extends Application {
                 .addToBackStack( ((MainActivity) fragmentActivity).bodyFragment )
                 .commit();
     }
-
+/*
     public void setFrag(FragmentActivity fragmentActivity,Fragment fm, int layout_id){
         ((MainActivity) fragmentActivity).bodyFragment  = fm.getClass().getSimpleName();
         fragmentActivity.getSupportFragmentManager().beginTransaction()
@@ -57,5 +57,5 @@ public class MyApplication extends Application {
                 .replace(layout_id, fm,  ((MainActivity) fragmentActivity).bodyFragment )
                 .commit();                //.addToBackStack( ((MainActivity) fragmentActivity).bodyFragment )
 
-    }
+    }*/
 }

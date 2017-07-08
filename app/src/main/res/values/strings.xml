@@ -4,10 +4,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="finger_print">Empreinte\nDigitale</string>
     <string name="vbadge">VBadge</string>
-    <string name="vbadge_name">NOM Prénom</string>
+    <string name="vbadge_name">ABAROUDI Anass</string>
     <string name="vbadge_state">Etat de badge :</string>
     <string name="date_in">Date d\'entrée</string>
     <string name="date_out">Date de sortie</string>
     <string name="vbadge_secteur">Secteurs autorisés</string>
     <string name="facial_recognition">Reconnaissance\nFaciale</string>
+    <string name="instructions">Placer votre doit sur le scanner d\'empreinte digitale</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

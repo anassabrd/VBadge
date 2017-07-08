@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.surtymar.vbadge.Activities.MainActivity;
+import com.surtymar.vbadge.Fragments.FingerprintFragment;
+import com.surtymar.vbadge.Fragments.VBadgeFragment;
+import com.surtymar.vbadge.MyApplication;
 import com.surtymar.vbadge.R;
 import com.surtymar.vbadge.Utils.ImageSaver;
 
@@ -44,22 +47,30 @@ public class VBadgeAdapter extends PagerAdapter {
 
 
             layout = (ViewGroup) inflater.inflate(R.layout.qrcode, container, false);
-            ImageView qr_code = ((ImageView) layout.findViewById(R.id.qr_code));
-            if (qr_code != null)
-                qr_code.setVisibility(View.VISIBLE);
+            ImageView ic_qrcode = ((ImageView) layout.findViewById(R.id.ic_qrcode));
+            if (ic_qrcode != null)
+                ic_qrcode.setVisibility(View.VISIBLE);
             ProgressBar qr_progress = (ProgressBar) layout.findViewById(R.id.qr_progress);
             if(qr_progress != null)
                 qr_progress.setVisibility(View.GONE);
 
-            ((ImageView)layout.findViewById(R.id.qr_code)).setImageBitmap(bitmap);
+            ((ImageView)layout.findViewById(R.id.ic_qrcode)).setImageBitmap(bitmap);
         }
         if( position == 1 )
             layout = (ViewGroup) inflater.inflate(R.layout.nfc, container, false);
-        */if( position == 0 )
+        */if( position == 0 ) {
             layout = (ViewGroup) inflater.inflate(R.layout.fingerprint, container, false);
+            layout.findViewById(R.id.fingerprint).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((MyApplication)mainActivity.getApplication()).setFragment(mainActivity, new FingerprintFragment(),R.id.fragment_container);
+
+                }
+            });
+        }
         if( position == 1 )
             layout = (ViewGroup) inflater.inflate(R.layout.facial, container, false);
-        ((ViewPager) container).addView(layout);
+        container.addView(layout);
 
         return layout;
     }
