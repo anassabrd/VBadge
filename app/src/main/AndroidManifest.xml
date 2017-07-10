@@ -4,11 +4,15 @@
 
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
+    <permission
+        android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
+        android:protectionLevel="signature" />
 
-    <uses-feature android:name="android.hardware.fingerprint"
-        android:required="false"/>
-
+    <uses-feature
+        android:name="android.hardware.fingerprint"
+        android:required="false" />
 
     <application
         android:name=".MyApplication"
@@ -17,7 +21,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Splash">
-        <activity android:name=".Activities.MainActivity">
+
+        <activity android:name=".Activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,16 +33,23 @@
         <service
             android:name=".Services.HceService"
             android:enabled="true"
-            android:permission="android.permission.BIND_NFC_SERVICE" >
+            android:permission="android.permission.BIND_NFC_SERVICE">
             <intent-filter>
                 <action android:name="android.nfc.cardemulation.action.HOST_APDU_SERVICE" />
             </intent-filter>
-            <!-- Fichier dans lequel est déclaré l’AID. Nous devons créer un dossier xml dans le dossier values
-            et créer un fichier apduservice.xml dans lequel nous allons déclarer l’AID de notre application   -->
+            <!--
+            Fichier dans lequel est déclaré l’AID. Nous devons créer un dossier xml dans le dossier values
+            et créer un fichier apduservice.xml dans lequel nous allons déclarer l’AID de notre application
+            -->
             <meta-data
                 android:name="android.nfc.cardemulation.host_apdu_service"
                 android:resource="@xml/apduservice" />
         </service>
+
+        <activity android:name=".Activities.MainActivity"/>
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="@string/map_key"/>
     </application>
 
 </manifest>

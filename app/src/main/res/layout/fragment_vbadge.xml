@@ -110,11 +110,20 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/vbadge_secteur"/>
+                            android:text="@string/vbadge_secteur"
+                            android:layout_marginEnd="10dp"/>
                         <Spinner
                             android:id="@+id/vbadge_section"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
+
+                        <ImageView
+                            android:id="@+id/openMapDialog"
+                            android:layout_width="30dp"
+                            android:layout_height="35dp"
+                            android:tint="@color/TealDark"
+                            android:src="@drawable/ic_mapmarker"
+                            />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -127,7 +136,8 @@
                     android:scaleType="centerCrop"
                     android:layout_margin="5dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_qrcode"/>
+                    android:src="@drawable/ic_qrcode"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 

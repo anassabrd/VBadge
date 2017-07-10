@@ -6,6 +6,9 @@ import android.support.v4.app.FragmentActivity;
 
 import com.surtymar.vbadge.Activities.MainActivity;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 
 /**
  * Created by Anass on 27/04/2017.
@@ -16,9 +19,9 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        Realm.init(this);
-//        RealmConfiguration config = new RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build();
-//        Realm.setDefaultConfiguration(config);
+        Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build();
+        Realm.setDefaultConfiguration(config);
 
     }
 

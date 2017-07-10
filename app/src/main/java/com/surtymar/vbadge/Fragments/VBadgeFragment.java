@@ -1,5 +1,6 @@
 package com.surtymar.vbadge.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -7,25 +8,33 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.surtymar.vbadge.Activities.MainActivity;
 import com.surtymar.vbadge.Adapters.VBadgeAdapter;
+import com.surtymar.vbadge.Beans.Section;
+import com.surtymar.vbadge.Beans.Visitor;
 import com.surtymar.vbadge.R;
 import com.surtymar.vbadge.Utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.realm.Realm;
 
 
 public class VBadgeFragment extends Fragment {
 
+    private Realm realm;
+    private Visitor visitor;
     private View v;
-    private FragmentStatePagerAdapter adapter;
     private ViewPager viewPager;
     private LinearLayout btnPrev, btnNext;
     private TextView right_title, left_title;
-    private TextView vbadge_name, vbadge_state, date_in, date_out;
-    private ImageView qrcode;
     private int[] layouts = {0,0};
 
     public VBadgeFragment() {
@@ -34,19 +43,51 @@ public class VBadgeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        realm = Realm.getDefaultInstance();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_vbadge, container, false);
-
         btnPrev = (LinearLayout) v.findViewById(R.id.btn_prev);
         btnNext = (LinearLayout) v.findViewById(R.id.btn_next);
         right_title = (TextView) v.findViewById(R.id.right_title);
         left_title = (TextView) v.findViewById(R.id.left_title);
         viewPager = (ViewPager) v.findViewById(R.id.viewPager);
 
+        visitor = realm.where(Visitor.class).findFirst();
+
+        if (visitor != null) {
+
+            ((TextView) v.findViewById(R.id.vbadge_name)).setText(
+                    visitor.getLast_name() + " " + visitor.getFirst_name());
+
+            ((TextView) v.findViewById(R.id.vbadge_state)).setText(" " + visitor.getBadge_state());
+
+            ((TextView) v.findViewById(R.id.date_in)).setText(visitor.getDate_in());
+
+            ((TextView) v.findViewById(R.id.date_out)).setText(visitor.getDate_out());
+
+            final Spinner spinner = (Spinner) v.findViewById(R.id.vbadge_section);
+            final List<String> sections = new ArrayList<String>();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    if (visitor != null) {
+                        List<Section> sectionList = realm.where(Section.class).findAll();
+                        for (int j = 0; j < sectionList.size(); j++) {
+                            sections.add(sectionList.get(j).getName());
+                        }
+                    }
+                    ArrayAdapter<String> dataAdapterLiaison = new ArrayAdapter<String>(getContext(), R.layout.item_spinner, sections);
+                    dataAdapterLiaison.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner.setAdapter(dataAdapterLiaison);
+                }
+            });
+        }
         Utils.createQR(v);
+
+        Utils.openMapDialog(v,(MainActivity) getActivity());
 
         viewPager.setAdapter(new VBadgeAdapter((MainActivity) getActivity()));
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
