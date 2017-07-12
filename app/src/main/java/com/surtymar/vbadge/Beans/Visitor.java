@@ -17,6 +17,7 @@ public class Visitor extends RealmObject {
     private String badge_state;
     private String date_in;
     private String date_out;
+    private String image_url;
     private RealmList<Section> sections;
 
     public int getId() {
@@ -65,6 +66,14 @@ public class Visitor extends RealmObject {
 
     public void setDate_out(String date_out) {
         this.date_out = date_out;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 
     public RealmList<Section> getSections() {

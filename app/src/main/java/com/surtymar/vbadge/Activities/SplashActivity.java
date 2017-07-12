@@ -12,8 +12,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.surtymar.vbadge.Beans.Coordinates;
+import com.surtymar.vbadge.Beans.Section;
 import com.surtymar.vbadge.Beans.Visitor;
 import com.surtymar.vbadge.R;
+import com.surtymar.vbadge.Utils.ConnectivityCheck;
 import com.surtymar.vbadge.Utils.Utils;
 
 import org.json.JSONObject;
@@ -25,31 +28,32 @@ public class SplashActivity extends AppCompatActivity {
 
 
     private Realm realm;
-    private String url = "https://rawgit.com/anassabrd/VBadge/master/app/src/main/res/values/data.json";
+    private String url = "https://api.myjson.com/bins/felpb";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        ConnectivityCheck cc = new ConnectivityCheck(getApplicationContext());
 
-        RequestQueue queue = Volley.newRequestQueue(this);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null,  new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        new parseJson(response).execute();
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("VolleyError","Error:" +error.getMessage());
-                    }
-                });
+        if (cc.isConnected()) {
+            RequestQueue queue = Volley.newRequestQueue(this);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                    (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            new parseJson(response).execute();
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("VolleyError", "Error:" + error.getMessage());
+                        }
+                    });
 
-        queue.add(jsonObjectRequest);
-
-
+            queue.add(jsonObjectRequest);
+        }
     }
 
     public class parseJson extends AsyncTask<Void, Integer, Void>{
@@ -59,8 +63,6 @@ public class SplashActivity extends AppCompatActivity {
         parseJson(JSONObject jsonObject) {
             this.jsonObject = jsonObject;
         }
-
-
 
         @Override
         protected Void doInBackground(Void... objects) {
@@ -75,6 +77,8 @@ public class SplashActivity extends AppCompatActivity {
             return null;
         }
 
+//
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -82,7 +86,9 @@ public class SplashActivity extends AppCompatActivity {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                    realm.deleteAll();
+                    realm.where(Visitor.class).findAll().deleteAllFromRealm();
+                    realm.where(Section.class).findAll().deleteAllFromRealm();
+                    realm.where(Coordinates.class).findAll().deleteAllFromRealm();
                 }
             });
         }

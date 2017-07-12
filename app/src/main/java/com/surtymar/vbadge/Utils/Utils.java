@@ -1,8 +1,19 @@
 package com.surtymar.vbadge.Utils;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -15,6 +26,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -37,8 +52,13 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 
 import io.realm.Realm;
 
@@ -106,134 +126,72 @@ public class Utils {
         return returnString.toString();
     }
 
-    public static void DisplayMapPopup(final  View v, final MainActivity mainActivity) {
-        final Realm realm = Realm.getDefaultInstance();
-        //final EditText localisation = (EditText) v.findViewById(R.id.location);
-        v.findViewById(R.id.openMapDialog).setOnClickListener(new View.OnClickListener() {
+    public static void createImageFile(String url, MainActivity mainActivity) {
+
+        boolean result = Utils.checkPermission(mainActivity);
+        boolean success = true;
+
+        String root = Utils.getFirstWritableDirectory().toString();
+        Log.e("root", "" + root);
+        File myDir = new File(root + "/.VBADGE_IMAGES");
+        if(result) {
+            if (!myDir.exists())
+                success = myDir.mkdirs();
+        }
+        if(success)
+            Log.e("Success","folder created");
+        else
+            Log.e("Failed","folder not created");
+
+        final File destination = new File(myDir,System.currentTimeMillis() + ".jpg");
+
+        Glide.with(mainActivity).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
+
             @Override
-            public void onClick(View view) {
-                final GoogleMap googleMap;
-//                final Animation slide_out_bottom = AnimationUtils.loadAnimation(mainActivity, R.anim.slide_out_bottom);
-//                final Animation slide_in_bottom = AnimationUtils.loadAnimation(mainActivity, R.anim.slide_in_bottom);
-                final Dialog dialog = new Dialog(mainActivity);
-                //mMapView = (MapView) dialog.findViewById(R.id.mapView);
-                MapsInitializer.initialize(mainActivity);
-
-                MapView mMapView = (MapView) dialog.findViewById(R.id.mapView);
-                if (mMapView != null) {
-                    Log.e("mMapView != null","====true");
-                    mMapView.onCreate(dialog.onSaveInstanceState());
-                    mMapView.onResume();// needed to get the map to display immediately
-                    googleMap = mMapView.getMap();
-                    Coordinates myLocation = realm.where(Coordinates.class).equalTo("id", 1).findFirst();
-                    MarkerOptions marker0;
-                    // latitude and longitude
-                    if (googleMap != null) {
-                        Log.e("googleMap != null","====true");
-                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-                        dialog.setContentView(R.layout.dialogmap);
-                        dialog.show();
-
-                        /*if (dialog.findViewById(R.id.bar_save) != null) {
-                            dialog.findViewById(R.id.bar_save).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.bar_save).setAnimation(slide_in_bottom);
-                            dialog.findViewById(R.id.bar_save).findViewById(R.id.annuler).setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    dialog.findViewById(R.id.bar_save).setAnimation(slide_out_bottom);
-                                    dialog.findViewById(R.id.bar_save).setVisibility(View.GONE);
-                                    localisation.setText(googleMap.getMyLocation().getLatitude() + " " + googleMap.getMyLocation().getLongitude());
-
-                                }
-                            });
-                            dialog.findViewById(R.id.bar_save).findViewById(R.id.enregistrer).setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    dialog.findViewById(R.id.bar_save).setAnimation(slide_out_bottom);
-                                    dialog.findViewById(R.id.bar_save).setVisibility(View.GONE);
-                                    dialog.dismiss();
-
-                                }
-                            });
-                        }*/
-                        googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-
-                        UiSettings uiSettings = googleMap.getUiSettings();
-                        uiSettings.setMyLocationButtonEnabled(true);
-                        uiSettings.setZoomControlsEnabled(true);
-                        uiSettings.setCompassEnabled(true);
-                        uiSettings.setAllGesturesEnabled(true);
-                        uiSettings.setIndoorLevelPickerEnabled(true);
-                        uiSettings.setZoomGesturesEnabled(true);
-                        uiSettings.setMapToolbarEnabled(true);
-
-                        if (myLocation != null) {
-
-                            double latitude = myLocation.getLatitude();
-                            double longitude = myLocation.getLongitude();
-                            CameraPosition cameraPosition = new CameraPosition.Builder()
-                                    .target(new LatLng(latitude, longitude)).zoom(16.0F).build();
-                            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-                            /*googleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
-                                @Override
-                                public void onMarkerDragStart(Marker arg0) {
-                                    // TODO Auto-generated method stub
-                                    Log.e("System out", "onMarkerDragStart..." + arg0.getPosition().latitude + "..." + arg0.getPosition().longitude);
-                                }
-
-                                @SuppressWarnings("unchecked")
-                                @Override
-                                public void onMarkerDragEnd(final Marker arg0) {
-                                    // TODO Auto-generated method stub
-                                    Log.e("System out", "onMarkerDragEnd..." + arg0.getPosition().latitude + "..." + arg0.getPosition().longitude);
-
-                                    googleMap.animateCamera(CameraUpdateFactory.newLatLng(arg0.getPosition()));
-                                    if (dialog.findViewById(R.id.bar_save) != null) {
-                                        dialog.findViewById(R.id.bar_save).setVisibility(View.VISIBLE);
-                                        dialog.findViewById(R.id.bar_save).setAnimation(slide_in_bottom);
-                                        dialog.findViewById(R.id.bar_save).findViewById(R.id.annuler).setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                dialog.findViewById(R.id.bar_save).setAnimation(slide_out_bottom);
-                                                dialog.findViewById(R.id.bar_save).setVisibility(View.GONE);
-                                                localisation.setText(arg0.getPosition().latitude + " " + arg0.getPosition().longitude);
-                                            }
-                                        });
-                                        dialog.findViewById(R.id.bar_save).findViewById(R.id.enregistrer).setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                dialog.findViewById(R.id.bar_save).setAnimation(slide_out_bottom);
-                                                dialog.findViewById(R.id.bar_save).setVisibility(View.GONE);
-                                                dialog.dismiss();
-
-                                            }
-                                        });
-                                    }
-                                }
-
-                                @Override
-                                public void onMarkerDrag(Marker arg0) {
-                                    // TODO Auto-generated method stub
-                                    Log.i("System out", "onMarkerDrag...");
-                                }
-                            });*/
-                            marker0 = new MarkerOptions().position(new LatLng(latitude, longitude)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)).title("Infraction");
-
-                            marker0.draggable(true);
-                            googleMap.addMarker(marker0);
-
-
-                        } else
-                            Toast.makeText(mainActivity, "Redémarrez votre GPS !", Toast.LENGTH_LONG).show();
-                    }
-                    else
-                        Toast.makeText(mainActivity, "Redémarrez votre GPS !", Toast.LENGTH_LONG).show();
+            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                try {
+                    FileOutputStream out = new FileOutputStream(destination);
+                    resource.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.flush();
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-
         });
+
+
+        /*try {
+            Log.e("URL",""+url);
+            FileOutputStream out = new FileOutputStream(destination);
+            Bitmap bm = Glide
+                    .with(mainActivity)
+                    .load(url)
+                    .asBitmap()
+                    .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) // Width and height
+                    .get();
+
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+    }
+
+    public static File getFirstWritableDirectory() {
+        File file1 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
+        File file2 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath());
+        File file3 = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+        if (file1.exists()) {
+            return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        } else if (file2.exists()) {
+            return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        } else if (file3.exists()) {
+            return Environment.getExternalStorageDirectory();
+        } else {
+            return Environment.getExternalStorageDirectory();
+        }
     }
 
     public  static  void openMapDialog(final View v, final MainActivity mainActivity) {
@@ -289,5 +247,38 @@ public class Utils {
                     }
                 }
         });
+    }
+
+    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public static boolean checkPermission(final Context context) {
+        int currentAPIVersion = Build.VERSION.SDK_INT;
+        if(currentAPIVersion>=android.os.Build.VERSION_CODES.M)
+        {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    android.app.AlertDialog.Builder alertBuilder = new android.app.AlertDialog.Builder(context);
+                    alertBuilder.setCancelable(true);
+                    alertBuilder.setTitle("Permission necessary");
+                    alertBuilder.setMessage("External storage permission is necessary");
+                    alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                        }
+                    });
+                    android.app.AlertDialog alert = alertBuilder.create();
+                    alert.show();
+
+                } else {
+                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                }
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
     }
 }

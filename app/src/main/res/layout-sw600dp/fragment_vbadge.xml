@@ -61,7 +61,8 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical">
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10dp">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -107,7 +108,7 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center">
+                        android:gravity="center_vertical">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
