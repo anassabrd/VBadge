@@ -6,14 +6,18 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -126,7 +130,7 @@ public class Utils {
         return returnString.toString();
     }
 
-    public static void createImageFile(String url, MainActivity mainActivity) {
+    public static File createImage(MainActivity mainActivity) {
 
         boolean result = Utils.checkPermission(mainActivity);
         boolean success = true;
@@ -145,21 +149,7 @@ public class Utils {
 
         final File destination = new File(myDir,System.currentTimeMillis() + ".jpg");
 
-        Glide.with(mainActivity).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
-
-            @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-                try {
-                    FileOutputStream out = new FileOutputStream(destination);
-                    resource.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                    out.flush();
-                    out.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
+        return destination;
 
         /*try {
             Log.e("URL",""+url);
@@ -280,5 +270,18 @@ public class Utils {
         } else {
             return true;
         }
+    }
+
+    public static Intent cameraIntent(MainActivity activity){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(activity.getPackageManager()) != null){
+            File photoFile = null;
+            photoFile = createImage(activity);
+            if (photoFile != null){
+                Uri photoUri = FileProvider.getUriForFile(activity, activity.getPackageName()+".provider", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+            }
+        }
+        return takePictureIntent;
     }
 }

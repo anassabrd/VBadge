@@ -1,11 +1,11 @@
 package com.surtymar.vbadge.Fragments;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,27 +16,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SizeReadyCallback;
-import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.surtymar.vbadge.Activities.MainActivity;
 import com.surtymar.vbadge.Adapters.VBadgeAdapter;
 import com.surtymar.vbadge.Beans.Section;
 import com.surtymar.vbadge.Beans.Visitor;
+import com.surtymar.vbadge.MyApplication;
 import com.surtymar.vbadge.R;
 import com.surtymar.vbadge.Utils.Utils;
 
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +47,7 @@ public class VBadgeFragment extends Fragment {
     private LinearLayout btnPrev, btnNext;
     private TextView right_title, left_title;
     private int[] layouts = {0,0};
+    private int REQUEST_CAMERA = 123;
 
     public VBadgeFragment() {
     }
@@ -101,7 +97,24 @@ public class VBadgeFragment extends Fragment {
                 }
             });
 
-            Utils.createImageFile(visitor.getImage_url(), (MainActivity) getActivity());
+
+            Glide.with(getActivity())
+                    .load(visitor.getImage_url())
+                    .asBitmap()
+                    .into(new SimpleTarget<Bitmap>() {
+
+                @Override
+                public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                    try {
+                        FileOutputStream out = new FileOutputStream(Utils.createImage((MainActivity) getActivity()));
+                        resource.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                        out.flush();
+                        out.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
 
             Glide.with(getActivity())
                     .load(visitor.getImage_url())
@@ -110,11 +123,7 @@ public class VBadgeFragment extends Fragment {
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .error(R.drawable.ic_manager)
                     .into((ImageView) v.findViewById(R.id.pic_vbadge));
-
-
         }
-
-
 
         Utils.createQR(v);
 
@@ -205,5 +214,18 @@ public class VBadgeFragment extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        ((MyApplication)getActivity().getApplication()).setFragment(getActivity(), new FacialFragment(),R.id.fragment_container);
+
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CAMERA)
+                Toast.makeText(getActivity(),"Image capturée",Toast.LENGTH_LONG).show();
+        }
     }
 }

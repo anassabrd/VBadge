@@ -48,11 +48,7 @@ public class FingerprintFragment extends Fragment {
     private static final String KEY_NAME = "surtymar";
     private Cipher cipher;
     private KeyStore keyStore;
-    private KeyGenerator keyGenerator;
     private TextView textView;
-    private FingerprintManager.CryptoObject cryptoObject;
-    private FingerprintManager fingerprintManager;
-    private KeyguardManager keyguardManager;
 
     public FingerprintFragment() {
         // Required empty public constructor
@@ -70,39 +66,40 @@ public class FingerprintFragment extends Fragment {
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            keyguardManager =
-                    (KeyguardManager) getActivity().getSystemService(KEYGUARD_SERVICE);
-            fingerprintManager =
-                    (FingerprintManager) getActivity().getSystemService(FINGERPRINT_SERVICE);
+            KeyguardManager keyguardManager = (KeyguardManager) getActivity().getSystemService(KEYGUARD_SERVICE);
+            FingerprintManager fingerprintManager = (FingerprintManager) getActivity().getSystemService(FINGERPRINT_SERVICE);
 
             textView = (TextView) v.findViewById(R.id.textView);
 
             if (!fingerprintManager.isHardwareDetected()) {
                 textView.setText("Votre appareil ne posséde pas un scanner d'empreinte digitale");
             }
-            if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
-                textView.setText("Activez la permission d'empreinte digitale dans les paramétres");
-            }
-
-            if (!fingerprintManager.hasEnrolledFingerprints()) {
-                textView.setText("Aucune empreinte digitale n'est enregistré," +
-                        " veuillez enregistrer au moins une seule dans les paramétres");
-            }
-
-            if (!keyguardManager.isKeyguardSecure()) {
-                textView.setText("Protégez votre appareil avec un mode de déverrouillage");
-            } else {
-                try {
-                    generateKey();
-                } catch (FingerprintException e) {
-                    e.printStackTrace();
+            else{
+                if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
+                    textView.setText("Activez la permission d'empreinte digitale dans les paramétres");
                 }
 
-                if (initCipher()) {
-                    cryptoObject = new FingerprintManager.CryptoObject(cipher);
 
-                    FingerprintHandler helper = new FingerprintHandler(this.getContext());
-                    helper.startAuth(fingerprintManager, cryptoObject);
+                if (!fingerprintManager.hasEnrolledFingerprints()) {
+                    textView.setText("Aucune empreinte digitale n'est enregistré," +
+                            " veuillez enregistrer au moins une seule dans les paramétres");
+                }
+
+                if (!keyguardManager.isKeyguardSecure()) {
+                    textView.setText("Protégez votre appareil avec un mode de déverrouillage");
+                } else {
+                    try {
+                        generateKey();
+                    } catch (FingerprintException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (initCipher()) {
+                        FingerprintManager.CryptoObject cryptoObject = new FingerprintManager.CryptoObject(cipher);
+
+                        FingerprintHandler helper = new FingerprintHandler(this.getContext());
+                        helper.startAuth(fingerprintManager, cryptoObject);
+                    }
                 }
             }
         }
@@ -130,7 +127,7 @@ public class FingerprintFragment extends Fragment {
         try {
             keyStore = KeyStore.getInstance("AndroidKeyStore");
 
-            keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+            KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
 
             keyStore.load(null);
 

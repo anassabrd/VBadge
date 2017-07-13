@@ -17,4 +17,8 @@
     <string name="loading">Chargement ...</string>
 
     <string name="map_key">AIzaSyDjG1-dKy9r13LwtM9MCh6HCg1nbmwViPU</string>
-</resources>
+
+    <string name="app_id">29f43df6</string>
+    <string name="api_key">190bfdcb1eeaa0fcdba0de3de99aedf5</string>
+
+</resources><!---->
